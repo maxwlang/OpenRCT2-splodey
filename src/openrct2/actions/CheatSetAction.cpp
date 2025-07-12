@@ -270,6 +270,12 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::AllowSpecialColourSchemes:
             gameState.cheats.allowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
+        case CheatType::AllowIncompleteRides:
+            gameState.cheats.allowIncompleteRides = _param1 != 0;
+            break;
+        case CheatType::NormalizeRideCrashes:
+            gameState.cheats.normalizeRideCrashes = _param1 != 0;
+            break;
         case CheatType::RemoveParkFences:
             RemoveParkFences();
             break;
@@ -349,6 +355,10 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::AllowSpecialColourSchemes:
             [[fallthrough]];
         case CheatType::AllowTrackPlaceInvalidHeights:
+            [[fallthrough]];
+        case CheatType::AllowIncompleteRides:
+            [[fallthrough]];
+        case CheatType::NormalizeRideCrashes:
             [[fallthrough]];
         case CheatType::OpenClosePark:
             return { { 0, 1 }, { 0, 0 } };

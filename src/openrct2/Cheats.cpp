@@ -55,6 +55,8 @@ void CheatsReset()
     gameState.cheats.allowRegularPathAsQueue = false;
     gameState.cheats.allowSpecialColourSchemes = false;
     gameState.cheats.makeAllDestructible = false;
+    gameState.cheats.allowIncompleteRides = false;
+    gameState.cheats.normalizeRideCrashes = false;
     gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
     gameState.cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
@@ -113,6 +115,8 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gameState.cheats.allowRegularPathAsQueue, count);
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gameState.cheats.allowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.cheats.makeAllDestructible, count);
+        CheatEntrySerialise(ds, CheatType::AllowIncompleteRides, gameState.cheats.allowIncompleteRides, count);
+        CheatEntrySerialise(ds, CheatType::NormalizeRideCrashes, gameState.cheats.normalizeRideCrashes, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.cheats.selectedStaffSpeed, count);
         CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.cheats.ignorePrice, count);
         CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.cheats.forcedParkRating, count);
@@ -219,6 +223,12 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::MakeDestructible:
                     ds << gameState.cheats.makeAllDestructible;
+                    break;
+                case CheatType::AllowIncompleteRides:
+                    ds << gameState.cheats.allowIncompleteRides;
+                    break;
+                case CheatType::NormalizeRideCrashes:
+                    ds << gameState.cheats.normalizeRideCrashes;
                     break;
                 case CheatType::SetStaffSpeed:
                     ds << gameState.cheats.selectedStaffSpeed;
@@ -335,6 +345,10 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_ALLOW_PATH_AS_QUEUE);
         case CheatType::AllowSpecialColourSchemes:
             return LanguageGetString(STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES);
+        case CheatType::AllowIncompleteRides:
+            return "Allow incomplete rides";
+        case CheatType::NormalizeRideCrashes:
+            return "Normalize ride crashes";
         case CheatType::RemoveParkFences:
             return LanguageGetString(STR_CHEAT_REMOVE_PARK_FENCES);
         default:

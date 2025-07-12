@@ -4051,16 +4051,19 @@ ResultWithMessage Ride::test(bool isApplying)
         return message;
     }
 
-    message = changeStatusCheckCompleteCircuit(trackElement);
-    if (!message.Successful)
+    if (!getGameState().cheats.allowIncompleteRides)
     {
-        return message;
-    }
+        message = changeStatusCheckCompleteCircuit(trackElement);
+        if (!message.Successful)
+        {
+            return message;
+        }
 
-    message = changeStatusCheckTrackValidity(trackElement);
-    if (!message.Successful)
-    {
-        return message;
+        message = changeStatusCheckTrackValidity(trackElement);
+        if (!message.Successful)
+        {
+            return message;
+        }
     }
 
     return changeStatusCreateVehicles(isApplying, trackElement);
@@ -4088,16 +4091,19 @@ ResultWithMessage Ride::simulate(bool isApplying)
         return message;
     }
 
-    if (isBlockSectioned() && findTrackGap(trackElement, &problematicTrackElement))
+    if (!getGameState().cheats.allowIncompleteRides)
     {
-        RideScrollToTrackError(problematicTrackElement);
-        return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-    }
+        if (isBlockSectioned() && findTrackGap(trackElement, &problematicTrackElement))
+        {
+            RideScrollToTrackError(problematicTrackElement);
+            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
+        }
 
-    message = changeStatusCheckTrackValidity(trackElement);
-    if (!message.Successful)
-    {
-        return message;
+        message = changeStatusCheckTrackValidity(trackElement);
+        if (!message.Successful)
+        {
+            return message;
+        }
     }
 
     return changeStatusCreateVehicles(isApplying, trackElement);
@@ -4146,16 +4152,19 @@ ResultWithMessage Ride::open(bool isApplying)
         return message;
     }
 
-    message = changeStatusCheckCompleteCircuit(trackElement);
-    if (!message.Successful)
+    if (!getGameState().cheats.allowIncompleteRides)
     {
-        return message;
-    }
+        message = changeStatusCheckCompleteCircuit(trackElement);
+        if (!message.Successful)
+        {
+            return message;
+        }
 
-    message = changeStatusCheckTrackValidity(trackElement);
-    if (!message.Successful)
-    {
-        return message;
+        message = changeStatusCheckTrackValidity(trackElement);
+        if (!message.Successful)
+        {
+            return message;
+        }
     }
 
     return changeStatusCreateVehicles(isApplying, trackElement);

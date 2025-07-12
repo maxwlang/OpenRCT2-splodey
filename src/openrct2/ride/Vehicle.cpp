@@ -2929,7 +2929,6 @@ void Vehicle::UpdateCollisionSetup()
         nextTrain->prev_vehicle_on_ride = prev_vehicle_on_ride;
     }
 
-
     velocity = 0;
 
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)

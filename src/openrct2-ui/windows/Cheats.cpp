@@ -183,6 +183,8 @@ enum WindowCheatsWidgetIdx
     WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,
     WIDX_DISABLE_TRAIN_LENGTH_LIMITS,
     WIDX_IGNORE_RESEARCH_STATUS,
+    WIDX_ALLOW_INCOMPLETE_RIDES,
+    WIDX_NORMALIZE_RIDE_CRASHES,
 
     WIDX_WEATHER_GROUP = WIDX_TAB_CONTENT,
     WIDX_WEATHER,
@@ -331,11 +333,13 @@ static constexpr auto window_cheats_rides_widgets = makeWidgets(
     makeWidget({ 11, 252}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
     makeWidget({ 11, 269}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
 
-    makeWidget({  5, 292}, {238, 86},        WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Availability group
+    makeWidget({  5, 292}, {238, 120},        WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Availability group
     makeWidget({ 11, 308}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
     makeWidget({ 11, 325}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
     makeWidget({ 11, 342}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
-    makeWidget({ 11, 359}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           )  // Ignore Research Status
+    makeWidget({ 11, 359}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
+    makeWidget({ 11, 376}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_ALLOW_INCOMPLETE_RIDES                    ), // Allow incomplete rides
+    makeWidget({ 11, 393}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_NORMALIZE_RIDE_CRASHES                     ) // Normalize ride crashes
 );
 
 static constexpr auto window_cheats_weather_widgets = makeWidgets(
@@ -564,6 +568,8 @@ static StringId window_cheats_page_titles[] = {
                     SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.cheats.enableAllDrawableTrackPieces);
                     SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.cheats.allowTrackPlaceInvalidHeights);
                     SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.cheats.makeAllDestructible);
+                    SetCheckboxValue(WIDX_ALLOW_INCOMPLETE_RIDES, gameState.cheats.allowIncompleteRides);
+                    SetCheckboxValue(WIDX_NORMALIZE_RIDE_CRASHES, gameState.cheats.normalizeRideCrashes);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
                     SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.cheats.disablePlantAging);
@@ -1339,6 +1345,12 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gameState.cheats.allowTrackPlaceInvalidHeights);
                 }
                 break;
+                case WIDX_ALLOW_INCOMPLETE_RIDES:
+                    CheatsSet(CheatType::AllowIncompleteRides, !gameState.cheats.allowIncompleteRides);
+                    break;
+                case WIDX_NORMALIZE_RIDE_CRASHES:
+                    CheatsSet(CheatType::NormalizeRideCrashes, !gameState.cheats.normalizeRideCrashes);
+                    break;
             }
         }
     };

@@ -2823,6 +2823,9 @@ void Vehicle::CheckIfMissing()
 
 void Vehicle::SimulateCrash() const
 {
+    if (getGameState().cheats.normalizeRideCrashes)
+        return;
+
     auto curRide = GetRide();
     if (curRide != nullptr)
     {
@@ -2861,7 +2864,7 @@ void Vehicle::UpdateCollisionSetup()
 
         curRide->crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::closed)
+        if (!getGameState().cheats.normalizeRideCrashes && curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
@@ -2869,8 +2872,11 @@ void Vehicle::UpdateCollisionSetup()
         }
     }
 
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    if (!getGameState().cheats.normalizeRideCrashes)
+    {
+        curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+        curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    }
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
@@ -4588,7 +4594,10 @@ void Vehicle::KillAllPassengersInTrain()
     if (curRide == nullptr)
         return;
 
-    ride_train_crash(*curRide, NumPeepsUntilTrainTail());
+    if (!getGameState().cheats.normalizeRideCrashes)
+    {
+        ride_train_crash(*curRide, NumPeepsUntilTrainTail());
+    }
 
     for (Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
          trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
@@ -4652,15 +4661,18 @@ void Vehicle::CrashOnLand()
 
         curRide->crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::closed)
+        if (!getGameState().cheats.normalizeRideCrashes && curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    if (!getGameState().cheats.normalizeRideCrashes)
+    {
+        curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+        curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    }
 
     if (IsHead())
     {
@@ -4720,15 +4732,18 @@ void Vehicle::CrashOnWater()
 
         curRide->crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::closed)
+        if (!getGameState().cheats.normalizeRideCrashes && curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    if (!getGameState().cheats.normalizeRideCrashes)
+    {
+        curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+        curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    }
 
     if (IsHead())
     {

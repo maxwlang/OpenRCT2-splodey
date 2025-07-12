@@ -339,7 +339,7 @@ static constexpr auto window_cheats_rides_widgets = makeWidgets(
     makeWidget({ 11, 342}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
     makeWidget({ 11, 359}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
     makeWidget({ 11, 376}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_ALLOW_INCOMPLETE_RIDES                    ), // Allow incomplete rides
-    makeWidget({ 11, 393}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_NORMALIZE_RIDE_CRASHES                     )
+    makeWidget({ 11, 393}, kCheatCheckSize,  WidgetType::checkbox, WindowColour::secondary, STR_NORMALIZE_RIDE_CRASHES                     ) // Normalize ride crashes
 );
 
 static constexpr auto window_cheats_weather_widgets = makeWidgets(
@@ -1352,6 +1352,12 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 break;
+                case WIDX_ALLOW_INCOMPLETE_RIDES:
+                    CheatsSet(CheatType::AllowIncompleteRides, !gameState.cheats.allowIncompleteRides);
+                    break;
+                case WIDX_NORMALIZE_RIDE_CRASHES:
+                    CheatsSet(CheatType::NormalizeRideCrashes, !gameState.cheats.normalizeRideCrashes);
+                    break;
             }
         }
     };

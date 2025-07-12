@@ -3015,7 +3015,6 @@ void Vehicle::UpdateCrashSetup()
         nextTrain->prev_vehicle_on_ride = prev_vehicle_on_ride;
     }
 
-
     velocity = 0;
 }
 

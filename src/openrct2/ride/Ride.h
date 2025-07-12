@@ -354,6 +354,13 @@ public:
     void updateMaxVehicles();
     void updateNumberOfCircuits();
 
+    /**
+     * Spawn a replacement train at the first station start. Used when
+     * normalising crashes so the ride keeps operating with the same
+     * number of trains.
+     */
+    void spawnReplacementTrain(uint8_t trainIndex);
+
     bool hasSpinningTunnel() const;
     bool hasWaterSplash() const;
     bool hasRapids() const;

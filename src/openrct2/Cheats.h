@@ -46,6 +46,8 @@ struct CheatsState
     bool allowRegularPathAsQueue;
     bool allowSpecialColourSchemes;
     bool makeAllDestructible;
+    bool allowIncompleteRides;
+    bool normalizeRideCrashes;
     StaffSpeedCheat selectedStaffSpeed;
     int32_t forcedParkRating;
 };
@@ -104,6 +106,8 @@ enum class CheatType : int32_t
     NoCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
     AllowRegularPathAsQueue,
     AllowSpecialColourSchemes,
+    AllowIncompleteRides,
+    NormalizeRideCrashes,
     RemoveParkFences,
     IgnorePrice,
     Count,

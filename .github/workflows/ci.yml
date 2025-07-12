@@ -32,8 +32,6 @@ defaults:
     shell: bash
 env:
   OPENRCT2_BUILD_SERVER: GitHub
-  OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
-  BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
   OPENRCT2_VERSION: 0.4.24
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
@@ -303,14 +301,6 @@ jobs:
         with:
           paths: "artifacts/test-**.xml"
         if: matrix.platform != 'arm64'
-      - name: Upload symbols (backtrace.io)
-        run: |
-          . scripts/setenv
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-*.zip
-          else
-            echo 'Not going to push build'
-          fi
   windows-mingw:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
@@ -702,25 +692,22 @@ jobs:
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
           body_path: release_notes.txt
           tag_name: ${{ needs.build_variables.outputs.tag }}
-      # The upload to binaries repository is done from develop only
-      - name: Create tag for binaries repository
+      # Publish binaries to the current repository for develop builds
+      - name: Create tag for binaries
         uses: actions/github-script@v5
         if: ${{ needs.build_variables.outputs.push }}
         with:
-          github-token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
           script: |
             github.rest.git.createRef({
-              owner: 'OpenRCT2',
-              repo: 'OpenRCT2-binaries',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               ref: 'refs/tags/${{ needs.build_variables.outputs.name }}',
-              sha: '2032e1601f3b35d07f088758d34bedbb84868616'
+              sha: '${{ github.sha }}'
             })
-      - name: Create release in binaries repo
+      - name: Create release
         uses: softprops/action-gh-release@v2
         if: ${{ needs.build_variables.outputs.push }}
         with:
-          repository: OpenRCT2/OpenRCT2-binaries
-          token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
           files: |
             openrct2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*

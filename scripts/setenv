@@ -33,9 +33,6 @@ else
         export OPENRCT2_PUSH=true
     fi
 fi
-if [[ -z "$OPENRCT2_ORG_TOKEN" ]]; then
-    unset OPENRCT2_PUSH
-fi
 
 # Get the short SHA1
 export OPENRCT2_SHA1=$GITHUB_SHA

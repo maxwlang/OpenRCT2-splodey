@@ -32,9 +32,9 @@ else
     if [[ "$OPENRCT2_BRANCH" =~ ^(develop|push/) ]]; then
         export OPENRCT2_PUSH=true
     fi
-fi
-if [[ -z "$OPENRCT2_ORG_TOKEN" ]]; then
-    unset OPENRCT2_PUSH
+    if [[ "$OPENRCT2_BRANCH" == "master" && "$ALLOW_MASTER_PUBLISH" == "true" ]]; then
+        export OPENRCT2_PUSH=true
+    fi
 fi
 
 # Get the short SHA1

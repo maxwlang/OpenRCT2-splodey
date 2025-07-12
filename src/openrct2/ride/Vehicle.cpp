@@ -2823,11 +2823,9 @@ void Vehicle::CheckIfMissing()
 
 void Vehicle::SimulateCrash() const
 {
-    auto curRide = GetRide();
-    if (curRide != nullptr)
-    {
-        curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    }
+    // Intentionally do nothing here so that simulated crashes do not
+    // mark the ride as crashed and therefore do not negatively affect
+    // its operation.
 }
 
 /**
@@ -2861,15 +2859,12 @@ void Vehicle::UpdateCollisionSetup()
 
         curRide->crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::closed)
-        {
-            // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
-        }
+        // Normally the ride would be forced closed here, which would also
+        // remove any queued guests. To allow the ride to continue operating
+        // after the crash, skip closing the ride.
     }
 
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+    // Do not flag the ride as crashed so that no negative effects are applied.
     curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     KillAllPassengersInTrain();
 
@@ -4652,14 +4647,10 @@ void Vehicle::CrashOnLand()
 
         curRide->crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::closed)
-        {
-            // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
-        }
+        // Normally the ride would be closed when a vehicle crashes. To
+        // keep the ride operating, skip that behaviour.
     }
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+    // Do not mark the ride as crashed so that no penalties apply.
     curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
     if (IsHead())
@@ -4720,14 +4711,10 @@ void Vehicle::CrashOnWater()
 
         curRide->crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::closed)
-        {
-            // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
-        }
+        // Normally the ride would be closed when a vehicle crashes. To
+        // keep the ride operating, skip that behaviour.
     }
-    curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
+    // Do not mark the ride as crashed so that no penalties apply.
     curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
     if (IsHead())

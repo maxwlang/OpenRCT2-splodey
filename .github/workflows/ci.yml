@@ -26,6 +26,10 @@ on:
           - test-signing
           - release-signing
         default: test-signing
+      publish-master:
+        description: Publish build from master branch
+        type: boolean
+        default: false
 
 defaults:
   run:
@@ -81,6 +85,8 @@ jobs:
           echo "distance=$DISTANCE" >> $GITHUB_OUTPUT
       - name: Set env
         id: setenv
+        env:
+          ALLOW_MASTER_PUBLISH: ${{ github.event.inputs.publish-master }}
         run: |
           . scripts/setenv
           echo "push=$OPENRCT2_PUSH"

@@ -2823,7 +2823,7 @@ void Vehicle::CheckIfMissing()
 
 void Vehicle::SimulateCrash() const
 {
-    if (getGameState().cheats.normalizeRideCrashes) 
+    if (getGameState().cheats.normalizeRideCrashes)
         return;
 
     auto curRide = GetRide();

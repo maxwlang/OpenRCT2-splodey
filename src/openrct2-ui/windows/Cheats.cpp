@@ -1343,13 +1343,6 @@ static StringId window_cheats_page_titles[] = {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
                     CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gameState.cheats.allowTrackPlaceInvalidHeights);
-                    break;
-                case WIDX_ALLOW_INCOMPLETE_RIDES:
-                    CheatsSet(CheatType::AllowIncompleteRides, !gameState.cheats.allowIncompleteRides);
-                    break;
-                case WIDX_NORMALIZE_RIDE_CRASHES:
-                    CheatsSet(CheatType::NormalizeRideCrashes, !gameState.cheats.normalizeRideCrashes);
-                    break;
                 }
                 break;
                 case WIDX_ALLOW_INCOMPLETE_RIDES:

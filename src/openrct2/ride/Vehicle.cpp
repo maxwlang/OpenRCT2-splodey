@@ -2926,7 +2926,6 @@ void Vehicle::UpdateCollisionSetup()
         nextTrain->prev_vehicle_on_ride = prev_vehicle_on_ride;
     }
 
-
     velocity = 0;
 }
 
@@ -3007,8 +3006,6 @@ void Vehicle::UpdateCrashSetup()
         prevTrain->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
         nextTrain->prev_vehicle_on_ride = prev_vehicle_on_ride;
     }
-
-
     velocity = 0;
 }
 

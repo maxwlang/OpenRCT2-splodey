@@ -5342,11 +5342,6 @@ void Ride::renew()
 void Ride::spawnReplacementTrain(uint8_t trainIndex)
 {
     LOG_INFO("Ride %u: attempt to spawn replacement train %u", id.ToUnderlying(), trainIndex);
-    if (numTrains >= maxTrains)
-    {
-        LOG_INFO("Ride %u already at max trains (%u/%u)", id.ToUnderlying(), numTrains, maxTrains);
-        return;
-    }
 
     StationIndex stationIndex = RideGetFirstValidStationStart(*this);
     if (stationIndex.IsNull())

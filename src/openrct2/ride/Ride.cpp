@@ -5341,24 +5341,24 @@ void Ride::renew()
 
 void Ride::spawnReplacementTrain(uint8_t trainIndex)
 {
-    LOG_VERBOSE("Ride %u: attempt to spawn replacement train %u", id.ToUnderlying(), trainIndex);
+    LOG_INFO("Ride %u: attempt to spawn replacement train %u", id.ToUnderlying(), trainIndex);
     if (numTrains >= maxTrains)
     {
-        LOG_VERBOSE("Ride %u already at max trains (%u/%u)", id.ToUnderlying(), numTrains, maxTrains);
+        LOG_INFO("Ride %u already at max trains (%u/%u)", id.ToUnderlying(), numTrains, maxTrains);
         return;
     }
 
     StationIndex stationIndex = RideGetFirstValidStationStart(*this);
     if (stationIndex.IsNull())
     {
-        LOG_WARNING("Ride %u: no valid station start for replacement train", id.ToUnderlying());
+        LOG_INFO("Ride %u: no valid station start for replacement train", id.ToUnderlying());
         return;
     }
 
     TileElement* tileElement = RideGetStationStartTrackElement(*this, stationIndex);
     if (tileElement == nullptr)
     {
-        LOG_WARNING("Ride %u: missing station track element for replacement train", id.ToUnderlying());
+        LOG_INFO("Ride %u: missing station track element for replacement train", id.ToUnderlying());
         return;
     }
 
@@ -5370,7 +5370,7 @@ void Ride::spawnReplacementTrain(uint8_t trainIndex)
     TrainReference train = VehicleCreateTrain(*this, trainPos, trainIndex, &remainingDistance, trackElement);
     if (train.head == nullptr || train.tail == nullptr)
     {
-        LOG_WARNING("Ride %u: failed to create replacement train", id.ToUnderlying());
+        LOG_INFO("Ride %u: failed to create replacement train", id.ToUnderlying());
         return;
     }
 
@@ -5399,7 +5399,7 @@ void Ride::spawnReplacementTrain(uint8_t trainIndex)
     vehicles[trainIndex] = train.head->Id;
     numTrains = std::min<uint8_t>(numTrains + 1, maxTrains);
     proposedNumTrains = numTrains;
-    LOG_VERBOSE("Ride %u: spawned replacement train %u", id.ToUnderlying(), trainIndex);
+    LOG_INFO("Ride %u: spawned replacement train %u", id.ToUnderlying(), trainIndex);
 }
 
 RideClassification Ride::getClassification() const

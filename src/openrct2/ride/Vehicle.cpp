@@ -2853,18 +2853,17 @@ void Vehicle::UpdateCollisionSetup()
 
     SetState(Vehicle::Status::Crashed, sub_state);
 
-    std::optional<uint8_t> crashedTrainIndex;
+    auto frontVehicle = GetHead();
+    auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
+    if (!trainIndex.has_value())
+    {
+        return;
+    }
+
+    std::optional<uint8_t> crashedTrainIndex{ static_cast<uint8_t>(trainIndex.value()) };
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
     {
-        auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
-        if (!trainIndex.has_value())
-        {
-            return;
-        }
-
-        crashedTrainIndex = static_cast<uint8_t>(trainIndex.value());
         curRide->crash(trainIndex.value());
 
         if (!getGameState().cheats.normalizeRideCrashes && curRide->status != RideStatus::closed)
@@ -2933,6 +2932,7 @@ void Vehicle::UpdateCollisionSetup()
 
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)
     {
+        LOG_VERBOSE("Ride %u: spawning replacement train %u after crash", curRide->id.ToUnderlying(), *crashedTrainIndex);
         curRide->spawnReplacementTrain(*crashedTrainIndex);
     }
 }
@@ -4659,18 +4659,17 @@ void Vehicle::CrashOnLand()
     InvokeVehicleCrashHook(Id, "land");
 #endif
 
-    std::optional<uint8_t> crashedTrainIndex;
+    auto frontVehicle = GetHead();
+    auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
+    if (!trainIndex.has_value())
+    {
+        return;
+    }
+
+    std::optional<uint8_t> crashedTrainIndex{ static_cast<uint8_t>(trainIndex.value()) };
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
     {
-        auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
-        if (!trainIndex.has_value())
-        {
-            return;
-        }
-
-        crashedTrainIndex = static_cast<uint8_t>(trainIndex.value());
         curRide->crash(trainIndex.value());
 
         if (!getGameState().cheats.normalizeRideCrashes && curRide->status != RideStatus::closed)
@@ -4717,6 +4716,7 @@ void Vehicle::CrashOnLand()
 
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)
     {
+        LOG_VERBOSE("Ride %u: spawning replacement train %u after crash", curRide->id.ToUnderlying(), *crashedTrainIndex);
         curRide->spawnReplacementTrain(*crashedTrainIndex);
     }
 }
@@ -4738,18 +4738,17 @@ void Vehicle::CrashOnWater()
     InvokeVehicleCrashHook(Id, "water");
 #endif
 
-    std::optional<uint8_t> crashedTrainIndex;
+    auto frontVehicle = GetHead();
+    auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
+    if (!trainIndex.has_value())
+    {
+        return;
+    }
+
+    std::optional<uint8_t> crashedTrainIndex{ static_cast<uint8_t>(trainIndex.value()) };
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
     {
-        auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
-        if (!trainIndex.has_value())
-        {
-            return;
-        }
-
-        crashedTrainIndex = static_cast<uint8_t>(trainIndex.value());
         curRide->crash(trainIndex.value());
 
         if (!getGameState().cheats.normalizeRideCrashes && curRide->status != RideStatus::closed)
@@ -4797,6 +4796,7 @@ void Vehicle::CrashOnWater()
 
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)
     {
+        LOG_VERBOSE("Ride %u: spawning replacement train %u after crash", curRide->id.ToUnderlying(), *crashedTrainIndex);
         curRide->spawnReplacementTrain(*crashedTrainIndex);
     }
 }

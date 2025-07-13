@@ -5335,6 +5335,55 @@ void Ride::renew()
     reliability = kRideInitialReliability;
 }
 
+void Ride::spawnReplacementTrain(uint8_t trainIndex)
+{
+    if (numTrains >= maxTrains)
+        return;
+
+    StationIndex stationIndex = RideGetFirstValidStationStart(*this);
+    if (stationIndex.IsNull())
+        return;
+
+    TileElement* tileElement = RideGetStationStartTrackElement(*this, stationIndex);
+    if (tileElement == nullptr)
+        return;
+
+    TrackElement* trackElement = tileElement->AsTrack();
+    CoordsXYZ trainPos = getStation(stationIndex).GetStart();
+    trainPos.z = trackElement->GetBaseZ();
+
+    int32_t remainingDistance = 0;
+    TrainReference train = VehicleCreateTrain(*this, trainPos, trainIndex, &remainingDistance, trackElement);
+    if (train.head == nullptr || train.tail == nullptr)
+        return;
+
+    if (!vehicles[0].IsNull())
+    {
+        Vehicle* firstTrain = GetEntity<Vehicle>(vehicles[0]);
+        if (firstTrain != nullptr)
+        {
+            Vehicle* lastTrainTail = GetEntity<Vehicle>(firstTrain->prev_vehicle_on_ride);
+            if (lastTrainTail != nullptr)
+            {
+                lastTrainTail->next_vehicle_on_ride = train.head->Id;
+                train.head->prev_vehicle_on_ride = lastTrainTail->Id;
+                train.tail->next_vehicle_on_ride = firstTrain->Id;
+                firstTrain->prev_vehicle_on_ride = train.tail->Id;
+            }
+        }
+    }
+    else
+    {
+        vehicles[0] = train.head->Id;
+        train.head->prev_vehicle_on_ride = train.tail->Id;
+        train.tail->next_vehicle_on_ride = train.head->Id;
+    }
+
+    vehicles[trainIndex] = train.head->Id;
+    numTrains = std::min<uint8_t>(numTrains + 1, maxTrains);
+    proposedNumTrains = numTrains;
+}
+
 RideClassification Ride::getClassification() const
 {
     const auto& rtd = getRideTypeDescriptor();

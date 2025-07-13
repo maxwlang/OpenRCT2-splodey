@@ -360,6 +360,10 @@ public:
      * number of trains.
      */
     void spawnReplacementTrain(uint8_t trainIndex);
+    /**
+     * Remove a train from the ride's vehicle list and update counts.
+     */
+    void removeTrain(uint8_t trainIndex);
 
     bool hasSpinningTunnel() const;
     bool hasWaterSplash() const;

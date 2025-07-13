@@ -5397,6 +5397,24 @@ void Ride::spawnReplacementTrain(uint8_t trainIndex)
     LOG_INFO("Ride %u: spawned replacement train %u", id.ToUnderlying(), trainIndex);
 }
 
+void Ride::removeTrain(uint8_t trainIndex)
+{
+    if (trainIndex >= numTrains)
+        return;
+
+    for (uint8_t i = trainIndex + 1; i < numTrains; ++i)
+    {
+        vehicles[i - 1] = vehicles[i];
+    }
+
+    vehicles[numTrains - 1] = EntityId::GetNull();
+
+    if (numTrains > 0)
+        numTrains--;
+
+    proposedNumTrains = numTrains;
+}
+
 RideClassification Ride::getClassification() const
 {
     const auto& rtd = getRideTypeDescriptor();

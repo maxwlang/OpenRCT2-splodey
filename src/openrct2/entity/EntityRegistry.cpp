@@ -32,6 +32,7 @@
 #include "Fountain.h"
 #include "MoneyEffect.h"
 #include "Particle.h"
+#include "BlackHole.h"
 
 #include <cassert>
 #include <cmath>
@@ -90,6 +91,7 @@ constexpr bool EntityTypeIsMiscEntity(const EntityType type)
         case EntityType::JumpingFountain:
         case EntityType::Balloon:
         case EntityType::Duck:
+        case EntityType::BlackHole:
             return true;
         default:
             return false;
@@ -301,7 +303,7 @@ uint16_t GetMiscEntityCount()
     uint16_t count = 0;
     for (auto id : { EntityType::SteamParticle, EntityType::MoneyEffect, EntityType::CrashedVehicleParticle,
                      EntityType::ExplosionCloud, EntityType::CrashSplash, EntityType::ExplosionFlare,
-                     EntityType::JumpingFountain, EntityType::Balloon, EntityType::Duck })
+                     EntityType::JumpingFountain, EntityType::Balloon, EntityType::Duck, EntityType::BlackHole })
     {
         count += GetEntityListCount(id);
     }
@@ -409,7 +411,7 @@ void UpdateAllMiscEntities()
 
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
-        Balloon, Duck>();
+        Balloon, Duck, BlackHole>();
 }
 
 void UpdateMoneyEffect()

@@ -2363,6 +2363,11 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
+                case EntityType::BlackHole:
+                {
+                    // No additional data to move
+                    break;
+                }
                 case EntityType::JumpingFountain:
                 {
                     auto fountain = entity->As<JumpingFountain>();

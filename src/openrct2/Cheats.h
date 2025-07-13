@@ -48,6 +48,7 @@ struct CheatsState
     bool makeAllDestructible;
     bool allowIncompleteRides;
     bool normalizeRideCrashes;
+    bool blackHolePlaced;
     StaffSpeedCheat selectedStaffSpeed;
     int32_t forcedParkRating;
 };
@@ -109,6 +110,7 @@ enum class CheatType : int32_t
     AllowIncompleteRides,
     NormalizeRideCrashes,
     RemoveParkFences,
+    BlackHoleAttraction,
     IgnorePrice,
     Count,
 };

@@ -797,11 +797,14 @@ void Peep::UpdateFalling()
     TileElement* tile_element = MapGetFirstElementAt(CoordsXY{ x, y });
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
+    bool antiGravityTile = false;
 
     if (tile_element != nullptr)
     {
         do
         {
+            if (tile_element->IsAntiGravity())
+                antiGravityTile = true;
             // If a path check if we are on it
             if (tile_element->GetType() == TileElementType::Path)
             {
@@ -865,7 +868,10 @@ void Peep::UpdateFalling()
             Remove();
             return;
         }
-        MoveTo({ x, y, z - 2 });
+        if (antiGravityTile)
+            MoveTo({ x, y, z + 2 });
+        else
+            MoveTo({ x, y, z - 2 });
         return;
     }
 

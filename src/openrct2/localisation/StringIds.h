@@ -1738,6 +1738,8 @@ enum : StringId
     STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT = 6791,
     STR_ALLOW_INCOMPLETE_RIDES = 6792,
     STR_NORMALIZE_RIDE_CRASHES = 6793,
+    STR_TILE_INSPECTOR_FLAG_ANTI_GRAVITY_SHORT = 6794,
+    STR_TILE_INSPECTOR_FLAG_ANTI_GRAVITY = 6795,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

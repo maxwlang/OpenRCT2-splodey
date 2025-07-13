@@ -100,6 +100,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COLUMN_DIRECTION,
         WIDX_COLUMN_GHOSTFLAG,
         WIDX_COLUMN_LASTFLAG,
+        WIDX_COLUMN_ANTI_GRAVITY,
         WIDX_GROUPBOX_DETAILS,
         WIDX_GROUPBOX_PROPERTIES,
 
@@ -220,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_TILE_INSPECTOR_TITLE;
 
     // Window sizes
-    static constexpr ScreenSize kWindowSize = { 400, 170 };
+    static constexpr ScreenSize kWindowSize = { 415, 170 };
     static constexpr ScreenSize kMinimumWindowSize = { 400, 130 };
     static constexpr ScreenSize kMaximumWindowSize = { 400, 800 };
 
@@ -245,6 +246,8 @@ namespace OpenRCT2::Ui::Windows
     constexpr auto kGhostFlagColumnSize = ScreenSize{ 15, 14 };
     constexpr auto kLastFlagColumnXY = kGhostFlagColumnXY + ScreenCoordsXY{ kGhostFlagColumnSize.width, 0 };
     constexpr auto kLastFlagColumnSize = ScreenSize{ 32, 14 };
+    constexpr auto kAntiGravityFlagColumnXY = kLastFlagColumnXY + ScreenCoordsXY{ kLastFlagColumnSize.width, 0 };
+    constexpr auto kAntiGravityFlagColumnSize = ScreenSize{ 15, 14 };
 
     constexpr int32_t kBottomPadding = 15;
     constexpr int32_t kGroupboxPadding = 6;
@@ -296,6 +299,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(kDirectionColumnXY,       kDirectionColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_DIRECTION_SHORT,        STR_TILE_INSPECTOR_DIRECTION),        /* Direction */
         makeWidget(kGhostFlagColumnXY,       kGhostFlagColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */
         makeWidget(kLastFlagColumnXY,        kLastFlagColumnSize,        WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */
+        makeWidget(kAntiGravityFlagColumnXY, kAntiGravityFlagColumnSize, WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_ANTI_GRAVITY_SHORT, STR_TILE_INSPECTOR_FLAG_ANTI_GRAVITY), /* Anti-gravity flag */
         /* Group boxes */
         makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, kStringIdNone,                          kStringIdNone ), /* Details group box */
         makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, kStringIdNone )  /* Properties group box */
@@ -1704,6 +1708,7 @@ static uint64_t PageDisabledWidgets[] = {
                 const int32_t clearanceHeight = tileElement->ClearanceHeight;
                 const bool ghost = tileElement->IsGhost();
                 const bool last = tileElement->IsLastForTile();
+                const bool antiGravity = tileElement->IsAntiGravity();
 
                 // Element name
                 auto ft = Formatter();
@@ -1736,6 +1741,9 @@ static uint64_t PageDisabledWidgets[] = {
                         rt, screenCoords + ScreenCoordsXY{ kGhostFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
                 if (last)
                     DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kLastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
+                if (antiGravity)
+                    DrawTextBasic(
+                        rt, screenCoords + ScreenCoordsXY{ kAntiGravityFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
 
                 screenCoords.y -= kScrollableRowHeight;
                 i++;

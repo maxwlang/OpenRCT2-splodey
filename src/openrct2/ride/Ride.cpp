@@ -5341,7 +5341,7 @@ void Ride::renew()
 
 void Ride::spawnReplacementTrain(uint8_t trainIndex)
 {
-    LOG_INFO("Ride %u: attempt to spawn replacement train %u", id.ToUnderlying(), trainIndex);
+    LOG_INFO("Ride %u: attempt to spawn replacement train for train %u", id.ToUnderlying(), trainIndex);
 
     StationIndex stationIndex = RideGetFirstValidStationStart(*this);
     if (stationIndex.IsNull())
@@ -5362,7 +5362,8 @@ void Ride::spawnReplacementTrain(uint8_t trainIndex)
     trainPos.z = trackElement->GetBaseZ();
 
     int32_t remainingDistance = 0;
-    TrainReference train = VehicleCreateTrain(*this, trainPos, trainIndex, &remainingDistance, trackElement);
+    uint8_t newIndex = trainIndex + 1;
+    TrainReference train = VehicleCreateTrain(*this, trainPos, newIndex, &remainingDistance, trackElement);
     if (train.head == nullptr || train.tail == nullptr)
     {
         LOG_INFO("Ride %u: failed to create replacement train", id.ToUnderlying());
@@ -5391,10 +5392,10 @@ void Ride::spawnReplacementTrain(uint8_t trainIndex)
         train.tail->next_vehicle_on_ride = train.head->Id;
     }
 
-    vehicles[trainIndex] = train.head->Id;
+    vehicles[newIndex] = train.head->Id;
     numTrains = std::min<uint8_t>(numTrains + 1, maxTrains);
     proposedNumTrains = numTrains;
-    LOG_INFO("Ride %u: spawned replacement train %u", id.ToUnderlying(), trainIndex);
+    LOG_INFO("Ride %u: spawned replacement train %u for crashed train %u", id.ToUnderlying(), newIndex, trainIndex);
 }
 
 void Ride::removeTrain(uint8_t trainIndex)

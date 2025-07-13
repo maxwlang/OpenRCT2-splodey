@@ -5269,6 +5269,10 @@ void Ride::crash(uint8_t vehicleIndex)
 
     if (gLegacyScene != LegacyScene::titleSequence && vehicle != nullptr)
     {
+        // Don't open the window if normalizing ride crashes is enabled
+        if (getGameState().cheats.normalizeRideCrashes)
+            return;
+
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);
         intent.PutExtra(INTENT_EXTRA_VEHICLE, vehicle);
@@ -5281,7 +5285,7 @@ void Ride::crash(uint8_t vehicleIndex)
         }
     }
 
-    if (Config::Get().notifications.RideCrashed)
+    if (Config::Get().notifications.RideCrashed && !getGameState().cheats.normalizeRideCrashes)
     {
         Formatter ft;
         formatNameTo(ft);

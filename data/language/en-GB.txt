@@ -3832,3 +3832,5 @@ STR_6790    :Deadzone: {COMMA32}%
 STR_6791    :Sensitivity: {COMMA32}%
 STR_6792    :Allow incomplete rides
 STR_6793    :Normalize ride crashes
+STR_6794    :A
+STR_6795    :Anti-gravity flag

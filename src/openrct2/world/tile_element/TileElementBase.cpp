@@ -74,6 +74,19 @@ void TileElementBase::SetInvisible(bool on)
         Flags &= ~TILE_ELEMENT_FLAG_INVISIBLE;
 }
 
+bool TileElementBase::IsAntiGravity() const
+{
+    return (this->Flags & TILE_ELEMENT_FLAG_ANTI_GRAVITY) != 0;
+}
+
+void TileElementBase::SetAntiGravity(bool on)
+{
+    if (on)
+        Flags |= TILE_ELEMENT_FLAG_ANTI_GRAVITY;
+    else
+        Flags &= ~TILE_ELEMENT_FLAG_ANTI_GRAVITY;
+}
+
 bool TileElementBase::IsGhost() const
 {
     return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;

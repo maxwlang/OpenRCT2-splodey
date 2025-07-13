@@ -34,6 +34,7 @@ enum
 {
     TILE_ELEMENT_FLAG_GHOST = (1 << 4),
     TILE_ELEMENT_FLAG_INVISIBLE = (1 << 5),
+    TILE_ELEMENT_FLAG_ANTI_GRAVITY = (1 << 6),
     TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 
@@ -71,6 +72,9 @@ struct TileElementBase
     void SetGhost(bool isGhost);
     bool IsInvisible() const;
     void SetInvisible(bool on);
+
+    bool IsAntiGravity() const;
+    void SetAntiGravity(bool on);
 
     uint8_t GetOccupiedQuadrants() const;
     void SetOccupiedQuadrants(uint8_t quadrants);

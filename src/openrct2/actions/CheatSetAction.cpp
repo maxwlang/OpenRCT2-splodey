@@ -18,9 +18,12 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
+#include "../entity/BlackHole.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
+#include "../interface/Viewport.h"
+#include "../world/Map.h"
 #include "../localisation/StringIds.h"
 #include "../network/Network.h"
 #include "../object/PathAdditionEntry.h"
@@ -279,6 +282,34 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::RemoveParkFences:
             RemoveParkFences();
             break;
+        case CheatType::BlackHoleAttraction:
+            if (_param1 != 0)
+            {
+                WindowBase* mainWindow = WindowGetMain();
+                if (mainWindow != nullptr)
+                {
+                    auto* viewport = WindowGetViewport(mainWindow);
+                    auto pos = ScreenGetMapXY({ viewport->pos.x + viewport->width / 2, viewport->pos.y + viewport->height / 2 }, nullptr);
+                    if (pos.has_value())
+                    {
+                        auto z = TileElementHeight(*pos);
+                        auto* bh = BlackHole::Create({ pos->x, pos->y, z });
+                        if (bh != nullptr)
+                        {
+                            gameState.cheats.blackHolePlaced = true;
+                        }
+                    }
+                }
+            }
+            else if (gameState.cheats.blackHolePlaced)
+            {
+                for (auto* bh : EntityList<BlackHole>())
+                {
+                    EntityRemove(bh);
+                }
+                gameState.cheats.blackHolePlaced = false;
+            }
+            break;
         default:
         {
             LOG_ERROR("Invalid cheat type %d", _cheatType.id);
@@ -435,6 +466,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             [[fallthrough]];
         case CheatType::RemoveParkFences:
             return { { 0, 0 }, { 0, 0 } };
+        case CheatType::BlackHoleAttraction:
+            return { { 0, 1 }, { 0, 0 } };
         case CheatType::Count:
             break;
     }

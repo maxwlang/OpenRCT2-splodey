@@ -57,6 +57,7 @@ void CheatsReset()
     gameState.cheats.makeAllDestructible = false;
     gameState.cheats.allowIncompleteRides = false;
     gameState.cheats.normalizeRideCrashes = false;
+    gameState.cheats.blackHolePlaced = false;
     gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
     gameState.cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
@@ -117,6 +118,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.cheats.makeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::AllowIncompleteRides, gameState.cheats.allowIncompleteRides, count);
         CheatEntrySerialise(ds, CheatType::NormalizeRideCrashes, gameState.cheats.normalizeRideCrashes, count);
+        CheatEntrySerialise(ds, CheatType::BlackHoleAttraction, gameState.cheats.blackHolePlaced, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.cheats.selectedStaffSpeed, count);
         CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.cheats.ignorePrice, count);
         CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.cheats.forcedParkRating, count);
@@ -229,6 +231,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::NormalizeRideCrashes:
                     ds << gameState.cheats.normalizeRideCrashes;
+                    break;
+                case CheatType::BlackHoleAttraction:
+                    ds << gameState.cheats.blackHolePlaced;
                     break;
                 case CheatType::SetStaffSpeed:
                     ds << gameState.cheats.selectedStaffSpeed;
@@ -351,6 +356,8 @@ const char* CheatsGetName(CheatType cheatType)
             return "Normalize ride crashes";
         case CheatType::RemoveParkFences:
             return LanguageGetString(STR_CHEAT_REMOVE_PARK_FENCES);
+        case CheatType::BlackHoleAttraction:
+            return "Black hole attraction";
         default:
             return "Unknown Cheat";
     }

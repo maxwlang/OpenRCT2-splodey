@@ -193,6 +193,8 @@ enum WindowCheatsWidgetIdx
     WIDX_FAUNA_GROUP,
     WIDX_CREATE_DUCKS,
     WIDX_REMOVE_DUCKS,
+    WIDX_PLACE_BLACK_HOLE,
+    WIDX_REMOVE_BLACK_HOLE,
 };
 
 #pragma region MEASUREMENTS
@@ -350,7 +352,9 @@ static constexpr auto window_cheats_weather_widgets = makeWidgets(
     makeWidget        ({ 11,  80}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
     makeWidget        ({  5, 102}, {238,  37},       WidgetType::groupbox,     WindowColour::secondary, STR_FAUNA                                                    ), // Fauna group
     makeWidget        ({ 11, 115}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP        ), // Create ducks
-    makeWidget        ({127, 115}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP        )  // Remove ducks
+    makeWidget        ({127, 115}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP        ), // Remove ducks
+    makeWidget        ({ 11, 136}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_PLACE_BLACK_HOLE,            kStringIdNone            ), // Place black hole
+    makeWidget        ({127, 136}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_REMOVE_BLACK_HOLE,           kStringIdNone            )  // Remove black hole
 );
 
 static constexpr std::span<const Widget> window_cheats_page_widgets[] =
@@ -1123,6 +1127,12 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_REMOVE_DUCKS:
                     CheatsSet(CheatType::RemoveDucks);
+                    break;
+                case WIDX_PLACE_BLACK_HOLE:
+                    CheatsSet(CheatType::BlackHoleAttraction, 1);
+                    break;
+                case WIDX_REMOVE_BLACK_HOLE:
+                    CheatsSet(CheatType::BlackHoleAttraction, 0);
                     break;
             }
         }

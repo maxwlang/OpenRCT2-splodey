@@ -18,6 +18,7 @@ enum class EntityType : uint8_t
     JumpingFountain,
     Balloon,
     Duck,
+    BlackHole,
     Count,
     Null = 255
 };

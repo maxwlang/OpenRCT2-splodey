@@ -2933,10 +2933,11 @@ void Vehicle::UpdateCollisionSetup()
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)
     {
         curRide->removeTrain(*crashedTrainIndex);
+        const uint8_t newIndex = curRide->numTrains;
         LOG_INFO(
             "Ride %u: spawning replacement train %u after crash; updateCollisionSetup", curRide->id.ToUnderlying(),
-            *crashedTrainIndex);
-        curRide->spawnReplacementTrain(*crashedTrainIndex);
+            newIndex);
+        curRide->spawnReplacementTrain(newIndex);
     }
 }
 
@@ -4720,9 +4721,10 @@ void Vehicle::CrashOnLand()
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)
     {
         curRide->removeTrain(*crashedTrainIndex);
+        const uint8_t newIndex = curRide->numTrains;
         LOG_INFO(
-            "Ride %u: spawning replacement train %u after crash; crashOnLand", curRide->id.ToUnderlying(), *crashedTrainIndex);
-        curRide->spawnReplacementTrain(*crashedTrainIndex);
+            "Ride %u: spawning replacement train %u after crash; crashOnLand", curRide->id.ToUnderlying(), newIndex);
+        curRide->spawnReplacementTrain(newIndex);
     }
 }
 
@@ -4802,9 +4804,10 @@ void Vehicle::CrashOnWater()
     if (crashedTrainIndex.has_value() && getGameState().cheats.normalizeRideCrashes)
     {
         curRide->removeTrain(*crashedTrainIndex);
+        const uint8_t newIndex = curRide->numTrains;
         LOG_INFO(
-            "Ride %u: spawning replacement train %u after crash; crashOnWater", curRide->id.ToUnderlying(), *crashedTrainIndex);
-        curRide->spawnReplacementTrain(*crashedTrainIndex);
+            "Ride %u: spawning replacement train %u after crash; crashOnWater", curRide->id.ToUnderlying(), newIndex);
+        curRide->spawnReplacementTrain(newIndex);
     }
 }
 
